@@ -31,7 +31,7 @@ Open `http://localhost:3000` in a browser.
 
 ### Check the project
 
-To run the linter and verify that the production build succeeds:
+To run the linter, automated tests and production build:
 
 ```bash
 npm run check
@@ -47,11 +47,13 @@ npm run db:init
 
 Once tests are added, replace that final sentence with the actual command, probably:
 
-### Run the tests
+### Run the automated tests
 
 ```bash
 npm test
 ```
+
+The tests use a fresh in-memory SQLite database and do not depend on the developer's local database or its contents.
 
 ## Third-Party Code
 
@@ -63,6 +65,7 @@ The following third-party packages are currently used:
 - **ESLint** — checks the JavaScript code for potential errors and style problems.
 - **eslint-config-next** — provides the ESLint rules recommended for Next.js projects.
 - **better-sqlite3** — provides the SQLite database connection and a straightforward synchronous API suitable for this local single-user application.
+- **Jest** — provides the automated test runner and assertions used to verify database and task behaviour.
 
 This section will be updated whenever another package is installed.
 
@@ -101,6 +104,18 @@ Active and archived task lists can be sorted by:
 - Status, using the order `Todo`, `In-Progress`, `Complete`.
 
 Each sorting option can also be reversed.
+
+## Testing
+
+The repository contains automated tests for:
+
+- Creating tasks and applying the default `Todo` status.
+- Editing task details without overwriting status.
+- Archiving tasks without deleting them.
+- Recalculating overdue when status changes to or from `Complete`.
+- Sorting tasks by due date, topic and status.
+
+Every test runs against a new in-memory SQLite database. The tests are deterministic and do not use the local `data/tasks.db` file.
 
 ## AI Usage
 

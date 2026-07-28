@@ -2,16 +2,16 @@
   "name": "todo_app",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-  "dev": "next dev",
-  "predev": "npm run db:init",
-  "build": "next build",
-  "start": "next start",
-  "lint": "eslint",
-  "db:init": "node scripts/init-db.mjs",
-  "check": "npm run lint && npm run build"
-},
-  
+  "scripts": {
+    "dev": "next dev",
+    "predev": "npm run db:init",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:init": "node scripts/init-db.mjs",
+    "check": "npm run lint && npm test && npm run build",
+    "test": "jest"
+  },
   "dependencies": {
     "better-sqlite3": "^13.0.1",
     "next": "16.2.12",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "eslint": "^9",
-    "eslint-config-next": "16.2.12"
+    "eslint-config-next": "16.2.12",
+    "jest": "^30.4.2"
   }
 }
