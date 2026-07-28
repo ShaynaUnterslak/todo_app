@@ -19,35 +19,40 @@ From the project root, run:
 npm ci
 ```
 
-### Initialise the database
-
-```bash
-npm run db:init
-```
-
-This creates the local SQLite database and applies the committed schema.
-
 ### Start the development server
 
 ```bash
 npm run dev
 ```
 
+The database is automatically initialised before the development server starts.
+
 Open `http://localhost:3000` in a browser.
 
-### Run the linter
+### Check the project
+
+To run the linter and verify that the production build succeeds:
 
 ```bash
-npm run lint
+npm run check
 ```
 
-### Create the production build
+### Initialise the database manually
+
+The database normally initialises automatically. To initialise it separately, run:
 
 ```bash
-npm run build
+npm run db:init
 ```
 
-The database setup and test commands will be added when those parts of the application are implemented.
+Once tests are added, replace that final sentence with the actual command, probably:
+
+```markdown
+### Run the tests
+
+```bash
+npm test
+```
 
 ## Third-Party Code
 

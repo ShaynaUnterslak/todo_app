@@ -2,13 +2,16 @@
   "name": "todo_app",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "db:init": "node scripts/init-db.mjs"
-  },
+"scripts": {
+  "dev": "next dev",
+  "predev": "npm run db:init",
+  "build": "next build",
+  "start": "next start",
+  "lint": "eslint",
+  "db:init": "node scripts/init-db.mjs",
+  "check": "npm run lint && npm run build"
+},
+  
   "dependencies": {
     "better-sqlite3": "^13.0.1",
     "next": "16.2.12",
