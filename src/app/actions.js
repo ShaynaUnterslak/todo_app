@@ -111,13 +111,8 @@ export async function createTaskAction(
   }
 
   revalidatePath("/");
-
-  return {
-    success: true,
-    message: "Task created successfully.",
-    errors: {},
-    submissionId: Date.now(),
-  };
+  
+  redirect("/");
 }
 
 export async function updateTaskDetailsAction(

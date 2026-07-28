@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { connection } from "next/server";
 import AppShell from "@/components/AppShell";
 import SortControls from "@/components/SortControls";
-import TaskForm from "@/components/TaskForm";
 import TaskList from "@/components/TaskList";
 import { getActiveTasks } from "@/lib/tasks";
 import { normaliseSortOptions } from "@/lib/taskRules";
@@ -23,33 +23,15 @@ export default async function Home({ searchParams }) {
     <AppShell
       activeView="active"
       title="Active tasks"
-      description="Create and manage your active tasks."
+      description="View and manage your active tasks."
     >
-      <section
-        className="task-section"
-        aria-labelledby="create-task-heading"
-      >
-        <h3 id="create-task-heading">
-          Create a task
-        </h3>
-
-        <p className="section-introduction">
-          Title, topic and due date are required.
-          Description is optional.
-        </p>
-
-        <TaskForm />
-      </section>
-
       <section
         className="task-section"
         aria-labelledby="task-list-heading"
       >
         <div className="task-list-heading">
           <div>
-            <h3 id="task-list-heading">
-              Your tasks
-            </h3>
+            <h3 id="task-list-heading">Your tasks</h3>
 
             <p className="section-introduction">
               Overdue tasks are labelled separately
@@ -57,10 +39,19 @@ export default async function Home({ searchParams }) {
             </p>
           </div>
 
-          <p className="task-count">
-            {tasks.length}{" "}
-            {tasks.length === 1 ? "task" : "tasks"}
-          </p>
+          <div className="list-header-actions">
+            <p className="task-count">
+              {tasks.length}{" "}
+              {tasks.length === 1 ? "task" : "tasks"}
+            </p>
+
+            <Link
+              href="/tasks/new"
+              className="primary-link create-task-link"
+            >
+              Create task
+            </Link>
+          </div>
         </div>
 
         <SortControls

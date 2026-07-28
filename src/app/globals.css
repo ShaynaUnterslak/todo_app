@@ -665,3 +665,22 @@ textarea {
     width: 100%;
   }
 }
+.list-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.create-task-link {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .list-header-actions {
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}

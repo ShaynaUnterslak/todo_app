@@ -1,17 +1,13 @@
 "use client";
 
-import {
-  useActionState,
-  useEffect,
-  useRef,
-} from "react";
+import Link from "next/link";
+import { useActionState } from "react";
 import { createTaskAction } from "@/app/actions";
 
 const initialState = {
   success: false,
   message: "",
   errors: {},
-  submissionId: 0,
 };
 
 export default function TaskForm() {
@@ -20,20 +16,8 @@ export default function TaskForm() {
     initialState,
   );
 
-  const formRef = useRef(null);
-
-  useEffect(() => {
-    if (state.success) {
-      formRef.current?.reset();
-    }
-  }, [state.success, state.submissionId]);
-
   return (
-    <form
-      ref={formRef}
-      action={formAction}
-      className="task-form"
-    >
+    <form action={formAction} className="task-form">
       <div className="form-grid">
         <div className="form-field">
           <label htmlFor="title">
@@ -47,7 +31,9 @@ export default function TaskForm() {
             required
             aria-invalid={Boolean(state.errors?.title)}
             aria-describedby={
-              state.errors?.title ? "title-error" : undefined
+              state.errors?.title
+                ? "title-error"
+                : undefined
             }
           />
 
@@ -70,7 +56,9 @@ export default function TaskForm() {
             required
             aria-invalid={Boolean(state.errors?.topic)}
             aria-describedby={
-              state.errors?.topic ? "topic-error" : undefined
+              state.errors?.topic
+                ? "topic-error"
+                : undefined
             }
           />
 
@@ -100,7 +88,10 @@ export default function TaskForm() {
           />
 
           {state.errors?.dueDate && (
-            <p id="due-date-error" className="field-error">
+            <p
+              id="due-date-error"
+              className="field-error"
+            >
               {state.errors.dueDate}
             </p>
           )}
@@ -109,7 +100,9 @@ export default function TaskForm() {
         <div className="form-field form-field-full">
           <label htmlFor="description">
             Description{" "}
-            <span className="optional-label">(optional)</span>
+            <span className="optional-label">
+              (optional)
+            </span>
           </label>
 
           <textarea
@@ -129,19 +122,19 @@ export default function TaskForm() {
           {pending ? "Saving task..." : "Create task"}
         </button>
 
-        {state.message && (
-          <p
-            className={
-              state.success
-                ? "form-message success-message"
-                : "form-message error-message"
-            }
-            aria-live="polite"
-          >
-            {state.message}
-          </p>
-        )}
+        <Link href="/" className="secondary-link">
+          Cancel
+        </Link>
       </div>
+
+      {state.message && (
+        <p
+          className="form-message error-message"
+          aria-live="polite"
+        >
+          {state.message}
+        </p>
+      )}
     </form>
   );
 }
