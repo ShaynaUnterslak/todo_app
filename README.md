@@ -47,7 +47,6 @@ npm run db:init
 
 Once tests are added, replace that final sentence with the actual command, probably:
 
-```markdown
 ### Run the tests
 
 ```bash
