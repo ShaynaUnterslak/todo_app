@@ -19,6 +19,14 @@ From the project root, run:
 npm ci
 ```
 
+### Initialise the database
+
+```bash
+npm run db:init
+```
+
+This creates the local SQLite database and applies the committed schema.
+
 ### Start the development server
 
 ```bash
@@ -50,16 +58,33 @@ The following third-party packages are currently used:
 - **React DOM** — renders React components in the browser.
 - **ESLint** — checks the JavaScript code for potential errors and style problems.
 - **eslint-config-next** — provides the ESLint rules recommended for Next.js projects.
+- **better-sqlite3** — provides the SQLite database connection and a straightforward synchronous API suitable for this local single-user application.
 
 This section will be updated whenever another package is installed.
 
 ## Database Design
 
-The SQLite database will be implemented during Stage 2.
+The application uses SQLite and contains one table named `tasks`.
 
-The approved design will use one `tasks` table. Archived tasks will remain in the same table and will be represented using an archive flag. Overdue will be calculated from the due date and task status rather than stored in the database.
+### Tasks table
 
-The final table columns, constraints and relationships will be documented after the schema has been implemented.
+| Column | Type | Constraints and purpose |
+| --- | --- | --- |
+| `id` | INTEGER | Primary key that uniquely identifies each task. |
+| `title` | TEXT | Required and cannot be blank. |
+| `description` | TEXT | Optional. An omitted description is stored as an empty string. |
+| `due_date` | TEXT | Required calendar date stored in `YYYY-MM-DD` format. |
+| `topic` | TEXT | Required and cannot be blank. |
+| `status` | TEXT | Required and restricted to `Todo`, `In-Progress` or `Complete`. Defaults to `Todo`. |
+| `archived` | INTEGER | Required archive flag restricted to `0` for active or `1` for archived. Defaults to `0`. |
+
+There are no relationships between tables because the application uses only one table.
+
+Archived tasks remain in the `tasks` table. Archiving changes the `archived` value rather than deleting or copying the task.
+
+Overdue is not stored in the database. It will be derived when tasks are read by comparing the due date with the current local date and checking that the status is not `Complete`.
+
+Title, due date and topic are required when creating or editing a task. Description is optional.
 
 ## AI Usage
 
