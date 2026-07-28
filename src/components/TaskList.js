@@ -1,6 +1,6 @@
 import Link from "next/link";
-import TaskStatusControls from "@/components/TaskStatusControls";
 import ArchiveTaskButton from "@/components/ArchiveTaskButton";
+import TaskStatusControls from "@/components/TaskStatusControls";
 
 const statusClassNames = {
   Todo: "status-todo",
@@ -21,18 +21,33 @@ export default function TaskList({ tasks }) {
   return (
     <ul className="task-list">
       {tasks.map((task) => (
-        <li key={task.id} className="task-card">
+        <li
+          key={task.id}
+          className={
+            task.isOverdue
+              ? "task-card overdue-task-card"
+              : "task-card"
+          }
+        >
           <article>
             <div className="task-card-heading">
               <h4>{task.title}</h4>
 
-              <span
-                className={`status-badge ${
-                  statusClassNames[task.status] || ""
-                }`}
-              >
-                {task.status}
-              </span>
+              <div className="task-card-labels">
+                <span
+                  className={`status-badge ${
+                    statusClassNames[task.status] || ""
+                  }`}
+                >
+                  {task.status}
+                </span>
+
+                {task.isOverdue && (
+                  <span className="overdue-badge">
+                    Overdue
+                  </span>
+                )}
+              </div>
             </div>
 
             <p className="task-description">
@@ -57,26 +72,26 @@ export default function TaskList({ tasks }) {
             </dl>
 
             <div className="task-card-actions">
-  <TaskStatusControls
-    taskId={task.id}
-    taskTitle={task.title}
-    currentStatus={task.status}
-  />
+              <TaskStatusControls
+                taskId={task.id}
+                taskTitle={task.title}
+                currentStatus={task.status}
+              />
 
-  <div className="task-item-links">
-    <Link
-      href={`/tasks/${task.id}/edit`}
-      className="edit-link"
-    >
-      Edit details
-    </Link>
+              <div className="task-item-links">
+                <Link
+                  href={`/tasks/${task.id}/edit`}
+                  className="edit-link"
+                >
+                  Edit details
+                </Link>
 
-    <ArchiveTaskButton
-      taskId={task.id}
-      taskTitle={task.title}
-    />
-  </div>
-</div>
+                <ArchiveTaskButton
+                  taskId={task.id}
+                  taskTitle={task.title}
+                />
+              </div>
+            </div>
           </article>
         </li>
       ))}

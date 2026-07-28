@@ -1,12 +1,24 @@
 import { connection } from "next/server";
 import AppShell from "@/components/AppShell";
 import ArchivedTaskList from "@/components/ArchivedTaskList";
+import SortControls from "@/components/SortControls";
 import { getArchivedTasks } from "@/lib/tasks";
+import { normaliseSortOptions } from "@/lib/taskRules";
 
-export default async function ArchivedTasksPage() {
+export default async function ArchivedTasksPage({
+  searchParams,
+}) {
   await connection();
 
-  const tasks = getArchivedTasks();
+  const resolvedSearchParams =
+    (await searchParams) || {};
+
+  const sortOptions = normaliseSortOptions({
+    sortBy: resolvedSearchParams.sort,
+    direction: resolvedSearchParams.direction,
+  });
+
+  const tasks = getArchivedTasks(sortOptions);
 
   return (
     <AppShell
@@ -34,6 +46,12 @@ export default async function ArchivedTasksPage() {
             {tasks.length === 1 ? "task" : "tasks"}
           </p>
         </div>
+
+        <SortControls
+          action="/archived"
+          sortBy={sortOptions.sortBy}
+          direction={sortOptions.direction}
+        />
 
         <ArchivedTaskList tasks={tasks} />
       </section>

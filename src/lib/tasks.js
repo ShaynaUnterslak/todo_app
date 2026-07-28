@@ -1,4 +1,64 @@
 import { getDatabase } from "@/lib/database";
+import {
+  getLocalDateString,
+  isTaskOverdue,
+  normaliseSortOptions,
+} from "@/lib/taskRules";
+
+const SORT_EXPRESSIONS = Object.freeze({
+  dueDate: "due_date",
+  topic: "topic COLLATE NOCASE",
+  status: `
+    CASE status
+      WHEN 'Todo' THEN 1
+      WHEN 'In-Progress' THEN 2
+      WHEN 'Complete' THEN 3
+    END
+  `,
+});
+
+function getTasksByArchivedValue(
+  archived,
+  options = {},
+) {
+  const database = getDatabase();
+
+  const { sortBy, direction } =
+    normaliseSortOptions(options);
+
+  const sortExpression = SORT_EXPRESSIONS[sortBy];
+
+  const sqlDirection =
+    direction === "desc" ? "DESC" : "ASC";
+
+  const tasks = database
+    .prepare(`
+      SELECT
+        id,
+        title,
+        description,
+        due_date,
+        topic,
+        status,
+        archived
+      FROM tasks
+      WHERE archived = ?
+      ORDER BY
+        ${sortExpression} ${sqlDirection},
+        id ASC
+    `)
+    .all(archived);
+
+  const today =
+    typeof options.today === "string"
+      ? options.today
+      : getLocalDateString();
+
+  return tasks.map((task) => ({
+    ...task,
+    isOverdue: isTaskOverdue(task, today),
+  }));
+}
 
 export function insertTask({
   title,
@@ -33,24 +93,12 @@ export function insertTask({
   return Number(result.lastInsertRowid);
 }
 
-export function getActiveTasks() {
-  const database = getDatabase();
+export function getActiveTasks(options = {}) {
+  return getTasksByArchivedValue(0, options);
+}
 
-  return database
-    .prepare(`
-      SELECT
-        id,
-        title,
-        description,
-        due_date,
-        topic,
-        status,
-        archived
-      FROM tasks
-      WHERE archived = 0
-      ORDER BY due_date ASC, id ASC
-    `)
-    .all();
+export function getArchivedTasks(options = {}) {
+  return getTasksByArchivedValue(1, options);
 }
 
 export function getTaskById(id) {
@@ -117,25 +165,6 @@ export function updateTaskStatus(id, status) {
     .run(status, id);
 
   return result.changes === 1;
-}
-export function getArchivedTasks() {
-  const database = getDatabase();
-
-  return database
-    .prepare(`
-      SELECT
-        id,
-        title,
-        description,
-        due_date,
-        topic,
-        status,
-        archived
-      FROM tasks
-      WHERE archived = 1
-      ORDER BY due_date ASC, id ASC
-    `)
-    .all();
 }
 
 export function archiveTask(id) {

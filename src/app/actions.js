@@ -9,11 +9,7 @@ import {
   updateTaskStatus,
 } from "@/lib/tasks";
 
-const VALID_STATUSES = [
-  "Todo",
-  "In-Progress",
-  "Complete",
-];
+import { VALID_STATUSES } from "@/lib/taskRules";
 
 function readTextField(formData, fieldName) {
   const value = formData.get(fieldName);

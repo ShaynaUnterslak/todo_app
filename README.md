@@ -86,9 +86,21 @@ There are no relationships between tables because the application uses only one 
 
 Archived tasks remain in the `tasks` table. Archiving changes the `archived` value rather than deleting or copying the task.
 
-Overdue is not stored in the database. It will be derived when tasks are read by comparing the due date with the current local date and checking that the status is not `Complete`.
+Overdue is not stored in the database. It is derived whenever tasks are read. A task is overdue when its due date is earlier than the current local calendar date and its status is not `Complete`.
+
+Changing a task to or from `Complete`, or changing its due date, causes the overdue result to be recalculated from the updated values.
 
 Title, due date and topic are required when creating or editing a task. Description is optional.
+
+### Task sorting
+
+Active and archived task lists can be sorted by:
+
+- Due date, with the default order being earliest to latest.
+- Topic, using case-insensitive alphabetical order.
+- Status, using the order `Todo`, `In-Progress`, `Complete`.
+
+Each sorting option can also be reversed.
 
 ## AI Usage
 

@@ -585,3 +585,83 @@ textarea {
     justify-content: flex-start;
   }
 }
+.sort-controls {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: #f8f9fb;
+}
+
+.sort-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sort-field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.sort-field select {
+  min-width: 150px;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.sort-field select:focus {
+  border-color: var(--focus);
+  outline: 3px solid rgba(49, 94, 168, 0.2);
+}
+
+.sort-button {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.35rem;
+  background: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.sort-button:hover {
+  opacity: 0.9;
+}
+
+.sort-button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.overdue-task-card {
+  border-left: 5px solid #b52d2d;
+}
+
+.overdue-badge {
+  flex-shrink: 0;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #b52d2d;
+  border-radius: 999px;
+  background: #fae8e8;
+  color: #8d2020;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .sort-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .sort-field select {
+    width: 100%;
+  }
+}

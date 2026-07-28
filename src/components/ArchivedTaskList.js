@@ -9,6 +9,7 @@ export default function ArchivedTaskList({ tasks }) {
     return (
       <div className="empty-state">
         <h3>No archived tasks</h3>
+
         <p>
           Tasks that you archive will remain viewable
           here.
@@ -22,7 +23,11 @@ export default function ArchivedTaskList({ tasks }) {
       {tasks.map((task) => (
         <li
           key={task.id}
-          className="task-card archived-task-card"
+          className={
+            task.isOverdue
+              ? "task-card archived-task-card overdue-task-card"
+              : "task-card archived-task-card"
+          }
         >
           <article>
             <div className="task-card-heading">
@@ -36,6 +41,12 @@ export default function ArchivedTaskList({ tasks }) {
                 >
                   {task.status}
                 </span>
+
+                {task.isOverdue && (
+                  <span className="overdue-badge">
+                    Overdue
+                  </span>
+                )}
 
                 <span className="archive-badge">
                   Archived
