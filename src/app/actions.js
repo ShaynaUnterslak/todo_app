@@ -1,12 +1,34 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { insertTask } from "@/lib/tasks";
+import { redirect } from "next/navigation";
+import {
+  insertTask,
+  updateTaskDetails,
+  updateTaskStatus,
+} from "@/lib/tasks";
+
+const VALID_STATUSES = [
+  "Todo",
+  "In-Progress",
+  "Complete",
+];
 
 function readTextField(formData, fieldName) {
   const value = formData.get(fieldName);
 
   return typeof value === "string" ? value.trim() : "";
+}
+
+function readTaskId(formData) {
+  const value = readTextField(formData, "taskId");
+  const taskId = Number(value);
+
+  if (!Number.isInteger(taskId) || taskId <= 0) {
+    return null;
+  }
+
+  return taskId;
 }
 
 function isValidDate(dateValue) {
@@ -22,12 +44,11 @@ function isValidDate(dateValue) {
   );
 }
 
-export async function createTaskAction(previousState, formData) {
-  const title = readTextField(formData, "title");
-  const description = readTextField(formData, "description");
-  const dueDate = readTextField(formData, "dueDate");
-  const topic = readTextField(formData, "topic");
-
+function validateTaskDetails({
+  title,
+  dueDate,
+  topic,
+}) {
   const errors = {};
 
   if (!title) {
@@ -43,6 +64,27 @@ export async function createTaskAction(previousState, formData) {
   if (!topic) {
     errors.topic = "Enter a topic.";
   }
+
+  return errors;
+}
+
+export async function createTaskAction(
+  previousState,
+  formData,
+) {
+  const title = readTextField(formData, "title");
+  const description = readTextField(
+    formData,
+    "description",
+  );
+  const dueDate = readTextField(formData, "dueDate");
+  const topic = readTextField(formData, "topic");
+
+  const errors = validateTaskDetails({
+    title,
+    dueDate,
+    topic,
+  });
 
   if (Object.keys(errors).length > 0) {
     return {
@@ -79,4 +121,91 @@ export async function createTaskAction(previousState, formData) {
     errors: {},
     submissionId: Date.now(),
   };
+}
+
+export async function updateTaskDetailsAction(
+  previousState,
+  formData,
+) {
+  const taskId = readTaskId(formData);
+  const title = readTextField(formData, "title");
+  const description = readTextField(
+    formData,
+    "description",
+  );
+  const dueDate = readTextField(formData, "dueDate");
+  const topic = readTextField(formData, "topic");
+
+  const errors = validateTaskDetails({
+    title,
+    dueDate,
+    topic,
+  });
+
+  if (!taskId) {
+    return {
+      success: false,
+      message: "The task could not be identified.",
+      errors: {},
+    };
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return {
+      success: false,
+      message: "Please correct the highlighted fields.",
+      errors,
+    };
+  }
+
+  try {
+    const updated = updateTaskDetails({
+      id: taskId,
+      title,
+      description,
+      dueDate,
+      topic,
+    });
+
+    if (!updated) {
+      return {
+        success: false,
+        message:
+          "This task is no longer available for editing.",
+        errors: {},
+      };
+    }
+  } catch (error) {
+    console.error("Task details update failed:", error);
+
+    return {
+      success: false,
+      message:
+        "The task details could not be saved. Please try again.",
+      errors: {},
+    };
+  }
+
+  revalidatePath("/");
+  revalidatePath(`/tasks/${taskId}/edit`);
+
+  redirect("/");
+}
+
+export async function updateTaskStatusAction(formData) {
+  const taskId = readTaskId(formData);
+  const status = readTextField(formData, "status");
+
+  if (!taskId || !VALID_STATUSES.includes(status)) {
+    return;
+  }
+
+  try {
+    updateTaskStatus(taskId, status);
+  } catch (error) {
+    console.error("Task status update failed:", error);
+    return;
+  }
+
+  revalidatePath("/");
 }

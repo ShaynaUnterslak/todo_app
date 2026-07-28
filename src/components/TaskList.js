@@ -1,3 +1,6 @@
+import Link from "next/link";
+import TaskStatusControls from "@/components/TaskStatusControls";
+
 const statusClassNames = {
   Todo: "status-todo",
   "In-Progress": "status-in-progress",
@@ -51,6 +54,21 @@ export default function TaskList({ tasks }) {
                 </dd>
               </div>
             </dl>
+
+            <div className="task-card-actions">
+              <TaskStatusControls
+                taskId={task.id}
+                taskTitle={task.title}
+                currentStatus={task.status}
+              />
+
+              <Link
+                href={`/tasks/${task.id}/edit`}
+                className="edit-link"
+              >
+                Edit details
+              </Link>
+            </div>
           </article>
         </li>
       ))}

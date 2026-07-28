@@ -393,3 +393,96 @@ textarea {
     flex-direction: column;
   }
 }
+.task-card-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.quick-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quick-status-label {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.status-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.status-button-group form {
+  margin: 0;
+}
+
+.status-button {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-button:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.status-button:focus-visible,
+.edit-link:focus-visible,
+.secondary-link:focus-visible,
+.primary-link:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.current-status-button {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+  cursor: default;
+}
+
+.edit-link,
+.secondary-link {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.primary-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: 0.4rem;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .task-card-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .edit-link {
+    align-self: flex-start;
+  }
+}

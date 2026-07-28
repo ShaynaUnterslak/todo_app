@@ -52,3 +52,69 @@ export function getActiveTasks() {
     `)
     .all();
 }
+
+export function getTaskById(id) {
+  const database = getDatabase();
+
+  return database
+    .prepare(`
+      SELECT
+        id,
+        title,
+        description,
+        due_date,
+        topic,
+        status,
+        archived
+      FROM tasks
+      WHERE id = ?
+        AND archived = 0
+    `)
+    .get(id);
+}
+
+export function updateTaskDetails({
+  id,
+  title,
+  description = "",
+  dueDate,
+  topic,
+}) {
+  const database = getDatabase();
+
+  const result = database
+    .prepare(`
+      UPDATE tasks
+      SET
+        title = @title,
+        description = @description,
+        due_date = @dueDate,
+        topic = @topic
+      WHERE id = @id
+        AND archived = 0
+    `)
+    .run({
+      id,
+      title,
+      description,
+      dueDate,
+      topic,
+    });
+
+  return result.changes === 1;
+}
+
+export function updateTaskStatus(id, status) {
+  const database = getDatabase();
+
+  const result = database
+    .prepare(`
+      UPDATE tasks
+      SET status = ?
+      WHERE id = ?
+        AND archived = 0
+    `)
+    .run(status, id);
+
+  return result.changes === 1;
+}
