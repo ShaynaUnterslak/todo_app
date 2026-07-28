@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  archiveTask,
   insertTask,
   updateTaskDetails,
   updateTaskStatus,
@@ -208,4 +209,45 @@ export async function updateTaskStatusAction(formData) {
   }
 
   revalidatePath("/");
+}
+export async function archiveTaskAction(taskId) {
+  const parsedTaskId = Number(taskId);
+
+  if (
+    !Number.isInteger(parsedTaskId) ||
+    parsedTaskId <= 0
+  ) {
+    return {
+      success: false,
+      message: "The task could not be identified.",
+    };
+  }
+
+  try {
+    const archived = archiveTask(parsedTaskId);
+
+    if (!archived) {
+      return {
+        success: false,
+        message:
+          "This task is no longer available for archiving.",
+      };
+    }
+  } catch (error) {
+    console.error("Task archiving failed:", error);
+
+    return {
+      success: false,
+      message:
+        "The task could not be archived. Please try again.",
+    };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/archived");
+
+  return {
+    success: true,
+    message: "Task archived successfully.",
+  };
 }

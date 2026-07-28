@@ -486,3 +486,102 @@ textarea {
     align-self: flex-start;
   }
 }
+
+.task-item-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.archive-control {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.archive-button {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #9b3030;
+  border-radius: 0.35rem;
+  background: var(--surface);
+  color: #842727;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.archive-button:hover:not(:disabled) {
+  background: #faeeee;
+}
+
+.archive-button:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.archive-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.archive-error {
+  max-width: 260px;
+  margin: 0;
+  color: #a82727;
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+.task-card-labels {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.archive-badge {
+  flex-shrink: 0;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #7e8791;
+  border-radius: 999px;
+  background: #f1f2f3;
+  color: #4e5964;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.archived-task-card {
+  background: #fafafa;
+}
+
+.archived-note {
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted-text);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+@media (max-width: 600px) {
+  .task-item-links {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .archive-control {
+    align-items: flex-start;
+  }
+
+  .archive-error {
+    text-align: left;
+  }
+
+  .task-card-labels {
+    justify-content: flex-start;
+  }
+}

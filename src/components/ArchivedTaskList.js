@@ -1,19 +1,18 @@
-import Link from "next/link";
-import TaskStatusControls from "@/components/TaskStatusControls";
-import ArchiveTaskButton from "@/components/ArchiveTaskButton";
-
 const statusClassNames = {
   Todo: "status-todo",
   "In-Progress": "status-in-progress",
   Complete: "status-complete",
 };
 
-export default function TaskList({ tasks }) {
+export default function ArchivedTaskList({ tasks }) {
   if (tasks.length === 0) {
     return (
       <div className="empty-state">
-        <h3>No active tasks</h3>
-        <p>Create your first task using the form above.</p>
+        <h3>No archived tasks</h3>
+        <p>
+          Tasks that you archive will remain viewable
+          here.
+        </p>
       </div>
     );
   }
@@ -21,18 +20,27 @@ export default function TaskList({ tasks }) {
   return (
     <ul className="task-list">
       {tasks.map((task) => (
-        <li key={task.id} className="task-card">
+        <li
+          key={task.id}
+          className="task-card archived-task-card"
+        >
           <article>
             <div className="task-card-heading">
               <h4>{task.title}</h4>
 
-              <span
-                className={`status-badge ${
-                  statusClassNames[task.status] || ""
-                }`}
-              >
-                {task.status}
-              </span>
+              <div className="task-card-labels">
+                <span
+                  className={`status-badge ${
+                    statusClassNames[task.status] || ""
+                  }`}
+                >
+                  {task.status}
+                </span>
+
+                <span className="archive-badge">
+                  Archived
+                </span>
+              </div>
             </div>
 
             <p className="task-description">
@@ -56,27 +64,10 @@ export default function TaskList({ tasks }) {
               </div>
             </dl>
 
-            <div className="task-card-actions">
-  <TaskStatusControls
-    taskId={task.id}
-    taskTitle={task.title}
-    currentStatus={task.status}
-  />
-
-  <div className="task-item-links">
-    <Link
-      href={`/tasks/${task.id}/edit`}
-      className="edit-link"
-    >
-      Edit details
-    </Link>
-
-    <ArchiveTaskButton
-      taskId={task.id}
-      taskTitle={task.title}
-    />
-  </div>
-</div>
+            <p className="archived-note">
+              This task is archived and cannot be
+              edited.
+            </p>
           </article>
         </li>
       ))}

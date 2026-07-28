@@ -118,3 +118,37 @@ export function updateTaskStatus(id, status) {
 
   return result.changes === 1;
 }
+export function getArchivedTasks() {
+  const database = getDatabase();
+
+  return database
+    .prepare(`
+      SELECT
+        id,
+        title,
+        description,
+        due_date,
+        topic,
+        status,
+        archived
+      FROM tasks
+      WHERE archived = 1
+      ORDER BY due_date ASC, id ASC
+    `)
+    .all();
+}
+
+export function archiveTask(id) {
+  const database = getDatabase();
+
+  const result = database
+    .prepare(`
+      UPDATE tasks
+      SET archived = 1
+      WHERE id = ?
+        AND archived = 0
+    `)
+    .run(id);
+
+  return result.changes === 1;
+}
