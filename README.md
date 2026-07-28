@@ -45,8 +45,6 @@ The database normally initialises automatically. To initialise it separately, ru
 npm run db:init
 ```
 
-Once tests are added, replace that final sentence with the actual command, probably:
-
 ### Run the automated tests
 
 ```bash
@@ -67,7 +65,6 @@ The following third-party packages are currently used:
 - **better-sqlite3** — provides the SQLite database connection and a straightforward synchronous API suitable for this local single-user application.
 - **Jest** — provides the automated test runner and assertions used to verify database and task behaviour.
 
-This section will be updated whenever another package is installed.
 
 ## Database Design
 
