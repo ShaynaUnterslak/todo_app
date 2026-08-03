@@ -19,7 +19,7 @@ ChatGPT was used for:
 
 The complete, unedited transcript is stored in:
 
-- `chatgpt-lab-1-transcript.md`
+- [ChatGPT transcript](chatgpt-lab-1-transcript.md)
 
 ## AI Declaration
 
