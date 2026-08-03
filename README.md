@@ -114,6 +114,18 @@ The repository contains automated tests for:
 
 Every test runs against a new in-memory SQLite database. The tests are deterministic and do not use the local `data/tasks.db` file.
 
+## Project Documentation
+
+Detailed project documentation is available in the [`docs`](docs/) folder:
+
+- [Running the Application](docs/running-it.md)
+- [Third-Party Code](docs/third-party-code.md)
+- [Database Design](docs/database-design.md)
+
+## AI Transcripts
+
+The complete AI usage transcript and supporting information are available in the [`ai`](ai/) folder.
+
 ## AI Usage
 
 This repository makes use of AI code generation using the following tools:
